@@ -1,5 +1,6 @@
-import React from 'react';
-
+const axios = require('axios');
+const NodeCache = require('node-cache');
+const cityList = require('../cities.json').List;
 function computeConfortIndex(weather) {
     const temp = weather.main.temp - 273.15; // Convert from Kelvin to Celsius
     const humidity = weather.main.humidity;
