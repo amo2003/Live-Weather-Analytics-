@@ -13,4 +13,4 @@ const authMiddleware = jwt({
   algorithms: ["RS256"]
 });
 
-module.exports = authMiddleware; // ✅ EXPORT FUNCTION ONLY
+module.exports = authMiddleware; 
