@@ -81,14 +81,14 @@ Password: Pass#fidenz
 
 7) Trade-offs Considered
 
-In-memory caching was used instead of Redis to keep the setup simple
-Comfort Index is subjective and may vary based on personal preferences
+In-memory caching was used instead of Redis to keep the setup simple.
+Comfort Index is subjective and may vary based on personal preferences.
 
 
 8) Known Limitations
 
-Weather data depends on OpenWeatherMap availability
-Comfort Index is a simplified model and not personalized per user
+Weather data depends on OpenWeatherMap availability.
+Comfort Index is a simplified model and not personalised per user.
 
 
 
