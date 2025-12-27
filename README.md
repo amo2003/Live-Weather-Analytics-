@@ -14,7 +14,7 @@ Caching: In-memory cache
 
 1) Setup Instructions - 
 
-1. clone the repository, git clone <repo-url>
+1. Clone the repository, git clone <repo-url>
 2. Backend setup
         cd backend
         npm install
@@ -49,8 +49,8 @@ to temperature variations.
 
 Humidity affects perceived heat and discomfort, so it has moderate weight.
 
-Wind speed can improve comfort in hot conditions but cause discomfort
-if too strong.
+Wind speed can improve comfort in hot conditions, but cause discomfort
+If too strong.
 
 
 4) City Ranking Logic - 
@@ -81,14 +81,14 @@ Password: Pass#fidenz
 
 7) Trade-offs Considered
 
-In-memory caching was used instead of Redis to keep the setup simple
-Comfort Index is subjective and may vary based on personal preferences
+In-memory caching was used instead of Redis to keep the setup simple.
+Comfort Index is subjective and may vary based on personal preferences.
 
 
 8) Known Limitations
 
-Weather data depends on OpenWeatherMap availability
-Comfort Index is a simplified model and not personalized per user
+Weather data depends on OpenWeatherMap availability.
+Comfort Index is a simplified model and not personalised per user.
 
 
 
