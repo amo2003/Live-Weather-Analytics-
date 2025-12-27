@@ -9,10 +9,13 @@ const WeatherDashboard = () => {
   const [weatherData, setWeatherData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // 🔹 BONUS STATES
+  // 🔹 BONUS STATES (already existing)
   const [search, setSearch] = useState('');
   const [sortBy, setSortBy] = useState('comfortScore');
   const [order, setOrder] = useState('desc');
+
+  // 🔹 NEW: DARK MODE STATE
+  const [darkMode, setDarkMode] = useState(false);
 
   const fetchWeather = useCallback(async () => {
     try {
@@ -42,18 +45,16 @@ const WeatherDashboard = () => {
     }
   }, [isAuthenticated, loginWithRedirect, fetchWeather]);
 
-  // 🔹 FILTER + SORT LOGIC
+  // 🔹 FILTER + SORT (UNCHANGED)
   const filteredAndSortedData = useMemo(() => {
     let data = [...weatherData];
 
-    // Filter by city name
     if (search) {
       data = data.filter(city =>
         city.city.toLowerCase().includes(search.toLowerCase())
       );
     }
 
-    // Sort
     data.sort((a, b) => {
       if (order === 'asc') return a[sortBy] - b[sortBy];
       return b[sortBy] - a[sortBy];
@@ -65,8 +66,15 @@ const WeatherDashboard = () => {
   if (loading) return <div className="loading">Loading...</div>;
 
   return (
-    <div className="weather-dashboard">
-      <h1>Weather Dashboard</h1>
+    <div className={`weather-dashboard ${darkMode ? 'dark' : ''}`}>
+      <div className="header">
+        <h1>Weather Dashboard</h1>
+
+        {/* 🔹 DARK MODE TOGGLE */}
+        <button className="dark-toggle" onClick={() => setDarkMode(!darkMode)}>
+          {darkMode ? '☀ Light Mode' : '🌙 Dark Mode'}
+        </button>
+      </div>
 
       {/* 🔹 FILTER CONTROLS */}
       <div className="controls">

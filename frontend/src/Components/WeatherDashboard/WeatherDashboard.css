@@ -38,6 +38,40 @@ body {
   color: #fff;
 }
 
+/* Dark mode toggle button */
+.dark-toggle {
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  background: #222;
+  color: white;
+  font-weight: 500;
+}
+
+/* Dark mode styles */
+.weather-dashboard.dark {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+.weather-dashboard.dark table {
+  background: #1e1e1e;
+}
+
+.weather-dashboard.dark th {
+  background: #333;
+}
+
+.weather-dashboard.dark td {
+  background: #1e1e1e;
+  color: #ddd;
+}
+
+.weather-dashboard.dark tr:hover {
+  background: #2a2a2a;
+}
+
 
 /* ===== Dashboard container ===== */
 .weather-dashboard {
