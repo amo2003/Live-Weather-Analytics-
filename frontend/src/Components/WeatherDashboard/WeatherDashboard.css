@@ -12,6 +12,33 @@ body {
   color: #ffffff;
 }
 
+.controls {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.controls input,
+.controls select,
+.controls button {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: none;
+  font-size: 0.9rem;
+}
+
+.controls input {
+  width: 180px;
+}
+
+.controls button {
+  cursor: pointer;
+  background: #ff9800;
+  color: #fff;
+}
+
+
 /* ===== Dashboard container ===== */
 .weather-dashboard {
   max-width: 1100px;

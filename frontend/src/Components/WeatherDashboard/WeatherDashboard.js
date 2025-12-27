@@ -1,75 +1,117 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import axios from 'axios';
 import './WeatherDashboard.css';
 
-
-
 const WeatherDashboard = () => {
-    const { getAccessTokenSilently, isAuthenticated, loginWithRedirect } = useAuth0();
-    const [weatherData, setWeatherData] = useState([]);
-    const [loading, setLoading] = useState(true);
+  const { getAccessTokenSilently, isAuthenticated, loginWithRedirect } = useAuth0();
 
-    const fetchWeather = useCallback(async () => {
-        try {
-            const token = await getAccessTokenSilently({
-                audience: 'https://weather-api'
-            });
+  const [weatherData, setWeatherData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-            const res = await axios.get('http://localhost:5000/api/weather', {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            setWeatherData(res.data.data);
-        } catch (err) {
-            console.error('Error fetching data:', err);
-        }finally {
-            setLoading(false);
+  // 🔹 BONUS STATES
+  const [search, setSearch] = useState('');
+  const [sortBy, setSortBy] = useState('comfortScore');
+  const [order, setOrder] = useState('desc');
+
+  const fetchWeather = useCallback(async () => {
+    try {
+      const token = await getAccessTokenSilently({
+        audience: 'https://weather-api'
+      });
+
+      const res = await axios.get('http://localhost:5000/api/weather', {
+        headers: {
+          Authorization: `Bearer ${token}`
         }
-    }, [getAccessTokenSilently]);
+      });
 
-    useEffect(() => {
-        if(!isAuthenticated) {
-            loginWithRedirect();
-        } else {
-            fetchWeather();
-        }
-    }, [isAuthenticated, loginWithRedirect, fetchWeather]);
+      setWeatherData(res.data.data);
+    } catch (err) {
+      console.error('Error fetching data:', err);
+    } finally {
+      setLoading(false);
+    }
+  }, [getAccessTokenSilently]);
 
-    if(loading) return <div className='loading'>Loading...</div>;
-    
- 
+  useEffect(() => {
+    if (!isAuthenticated) {
+      loginWithRedirect();
+    } else {
+      fetchWeather();
+    }
+  }, [isAuthenticated, loginWithRedirect, fetchWeather]);
+
+  // 🔹 FILTER + SORT LOGIC
+  const filteredAndSortedData = useMemo(() => {
+    let data = [...weatherData];
+
+    // Filter by city name
+    if (search) {
+      data = data.filter(city =>
+        city.city.toLowerCase().includes(search.toLowerCase())
+      );
+    }
+
+    // Sort
+    data.sort((a, b) => {
+      if (order === 'asc') return a[sortBy] - b[sortBy];
+      return b[sortBy] - a[sortBy];
+    });
+
+    return data;
+  }, [weatherData, search, sortBy, order]);
+
+  if (loading) return <div className="loading">Loading...</div>;
+
   return (
     <div className="weather-dashboard">
-        <h1>Weather Dashboard</h1>
+      <h1>Weather Dashboard</h1>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Rank</th>
-                    <th>City</th>
-                    <th>Description</th>
-                    <th>Temperature (°C)</th>
-                    <th>Comfort Score</th>
-                </tr>
-            </thead>
-            <tbody>
-                {weatherData.map((city, index) => (
-                    <tr key={city.city}>
-                        <td>{index + 1}</td>
-                        <td>{city.city}</td>
-                        <td>{city.description}</td>
-                        <td>{city.temp}</td>
-                        <td>{city.comfortScore}</td>
-                    </tr>
-                ))}
-            </tbody>
-           
-        </table>
-      
+      {/* 🔹 FILTER CONTROLS */}
+      <div className="controls">
+        <input
+          type="text"
+          placeholder="Search city..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+
+        <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+          <option value="comfortScore">Comfort Score</option>
+          <option value="temp">Temperature</option>
+        </select>
+
+        <button onClick={() => setOrder(order === 'asc' ? 'desc' : 'asc')}>
+          {order === 'asc' ? '⬆ Asc' : '⬇ Desc'}
+        </button>
+      </div>
+
+      {/* 🔹 TABLE */}
+      <table>
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>City</th>
+            <th>Description</th>
+            <th>Temperature (°C)</th>
+            <th>Comfort Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredAndSortedData.map((city, index) => (
+            <tr key={city.city}>
+              <td>{index + 1}</td>
+              <td>{city.city}</td>
+              <td>{city.description}</td>
+              <td>{city.temp}</td>
+              <td>{city.comfortScore}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
-}
+};
 
 export default WeatherDashboard;
